@@ -1,0 +1,27 @@
+:root {
+    --camera-width: 200px;
+    --camera-height: auto;
+}
+
+.camera {
+    border-radius: 15px;
+    background-color: gray;
+}
+
+.my-camera {
+    width: var(--camera-width);
+    height: var(--camera-height);
+    position: absolute;
+    left: 20px;
+    bottom: 0%;
+    margin-bottom: 20px;
+    transform: scaleX(-1);
+}
+
+.opponent-camera {
+    width: var(--camera-width);
+    height: var(--camera-height);
+    position: absolute;
+    left: calc(50% - calc(var(--camera-width)/2));
+    top: calc(50% - calc(var(--camera-height)/2));
+}
