@@ -1,4 +1,4 @@
-const socket = io('https://video.hexionteam.com:3000');
+const socket = io('https://video.hexionteam.com', { secure: true });
 const rtcConfiguration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
 const peerConnection = new RTCPeerConnection(rtcConfiguration);
 
