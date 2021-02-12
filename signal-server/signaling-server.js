@@ -1,6 +1,5 @@
 const fs = require('fs');
 const http = require('http');
-const crypto = require('crypto');
 const { v4: generateUUID } = require('uuid');
 
 let server = http.createServer();
