@@ -1,4 +1,4 @@
-const socket = io('http://93.172.226.103:3000');
+const socket = io('http://signal.hexionteam.com:3000');
 const rtcConfiguration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
 const peerConnection = new RTCPeerConnection(rtcConfiguration);
 
