@@ -1,4 +1,4 @@
-const socket = io('http://signal.hexionteam.com:3000');
+const socket = io('https://video.hexionteam.com:3000');
 const rtcConfiguration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
 const peerConnection = new RTCPeerConnection(rtcConfiguration);
 
@@ -7,7 +7,7 @@ async function giveOffer() {
         if (window.uuid) {
             socket.on(`answer-${uuid}`, (answer) => {
                 if (peerConnection.remoteDescription === null) {
-                    console.log(`got answer:`, uuid);
+                    console.log('got answer:', uuid);
                     const remoteDescription = new RTCSessionDescription(answer);
                     peerConnection.setRemoteDescription(remoteDescription);
                 }
@@ -16,11 +16,11 @@ async function giveOffer() {
             let offer = await peerConnection.createOffer();
             await peerConnection.setLocalDescription(offer);
 
-            console.log("Offering RTC...");
+            console.log('Offering RTC...');
             socket.emit('offer', window.uuid, offer);
         }
         else {
-            console.error("Cannot offer before I got a UUID");
+            console.error('Cannot offer before I got a UUID');
         }
     } catch (err) {
         console.error(err);
@@ -34,7 +34,7 @@ socket.on('uuid', (uuid) => {
     if (window.uuid === undefined) {
         window.uuid = uuid;
 
-        console.log(`Notifying that I got my UUID`);
+        console.log('Notifying that I got my UUID');
         socket.emit('uuid-recieved', uuid);
         giveOffer();
     }
@@ -43,7 +43,7 @@ socket.on('uuid', (uuid) => {
 socket.on('offer', async (uuid, offer) => {
     const remoteDescription = new RTCSessionDescription(offer);
     await peerConnection.setRemoteDescription(remoteDescription);
-    console.log(`got offer from`, uuid);
+    console.log('got offer from', uuid);
     if (window.videoStream) {
         /*window.videoStream.getTracks().forEach(track => {
             peerConnection.addTrack(track, window.videoStream);
@@ -57,13 +57,13 @@ socket.on('offer', async (uuid, offer) => {
 });
 
 socket.on('joined', async (uuid) => {
-    console.log(`WOW someone joined!`, uuid);
+    console.log('WOW someone joined!', uuid);
 });
 
 // Listen for local ICE candidates on the local RTCPeerConnection
 peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
-        console.log(`sending a candidate`);
+        console.log('sending a candidate');
         socket.emit('new-ice-candidate', event.candidate);
     }
 };
@@ -72,7 +72,7 @@ peerConnection.onicecandidate = (event) => {
 socket.on('new-ice-candidate', async (candidate) => {
     if (candidate) {
         try {
-            console.log(`adding recieved candidate`);
+            console.log('adding recieved candidate');
             await peerConnection.addIceCandidate(candidate);
         } catch (e) {
             console.error('Error adding received ice candidate', e);
@@ -83,13 +83,12 @@ socket.on('new-ice-candidate', async (candidate) => {
 // Listen for connectionstatechange on the local RTCPeerConnection
 peerConnection.addEventListener('connectionstatechange', (event) => {
     if (peerConnection.connectionState === 'connected') {
-        // Peers connected!
-        console.log(`MY BITCH IS CONNECTED!!!`);
+        console.log('Peers connected!');
     }
 });
 
 peerConnection.ontrack = async (event) => {
-    console.log(`GOT TRACK!`);
+    console.log('GOT TRACK!');
     let otherVideoElem = document.getElementById("other");
     if (otherVideoElem.srcObject) return;
     otherVideoElem.srcObject = event.streams[0];
@@ -112,7 +111,7 @@ navigator.mediaDevices.getUserMedia(constraints)
             window.localStream = localStream;
             myVideoElem.srcObject = localStream;
 
-            console.log(`asking to join...`);
+            console.log('asking to join...');
             socket.emit('join');
         } catch (e) {
             document.getElementById("you").innerHTML = "No Camera!";
