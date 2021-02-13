@@ -1,9 +1,10 @@
 const fs = require('fs');
 const https = require('https');
-const { v4: generateUUID } = require('uuid');
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const registerRoomHandlers = require('./rooms');
+const registerPeerConnectionHandlers = require('./peerConnections');
 
 const PORT = 8080;
 const httpsOptions = {
@@ -11,40 +12,23 @@ const httpsOptions = {
     cert: fs.readFileSync('../certificates/cert.pem')
 };
 
+// Use log formatter for HTTP logs
 app.use(morgan('common'));
+
+// Serve the app's files statically
 app.use(express.static('public'));
 
+// Create HTTPS server and Socket.IO server
 let server = https.createServer(httpsOptions, app);
 const io = require('socket.io')(server);
 
-io.on('connect', (client) => {
-    console.log('connect', client.id);
-    client.on('join', () => {
-        console.log('join', client.id);
-        client.emit('uuid', generateUUID());
-    });
+// Register the event handlers for every client connection
+io.on('connection', (client) => {
+    console.log('connection', client.id);
 
-    client.on('uuid-recieved', (uuid) => {
-        console.log('uuid-recieved', uuid);
-        client.join('room');
-        client.broadcast.to('room').emit('joined', uuid);
-    });
-
-    client.on('offer', (uuid, offer) => {
-        console.log('offer from', uuid);
-        client.join('room');
-        client.broadcast.to('room').emit('offer', uuid, offer);
-    });
-
-    client.on('answer', (uuid, answer) => {
-        console.log(`answer should trigger answer-${uuid}`);
-        client.to('room').emit(`answer-${uuid}`, answer);
-    });
-
-    client.on('new-ice-candidate', (candidate) => {
-        console.log('new-ice-candidate', candidate);
-        client.broadcast.to('room').emit('new-ice-candidate', candidate);
-    });
+    registerRoomHandlers(client, io);
+    registerPeerConnectionHandlers(client, io);
 });
 
+// Listen for clients on PORT
 server.listen(PORT, () => console.log(`Serving files on port: ${PORT}`));

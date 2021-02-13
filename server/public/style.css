@@ -1,6 +1,16 @@
 :root {
     --camera-width: 200px;
     --camera-height: auto;
+    --joker-white: #E2FCEF;
+    --red-joker-color: #A20111;
+    --red-joker-darker-color: #6e1116;
+    --black-joker-color: #170F11 !important;
+    --black-joker-darker-color: #070707 !important;
+    --blue-joker-color: #6369D1;
+    --required-field-color: #EA0B21;
+    --black-shadow: #0c0c0c;
+    --overlaying-gray: #252627;
+    --player-table-height-num: 65%;
 }
 
 .camera {
@@ -24,4 +34,160 @@
     position: absolute;
     left: calc(50% - calc(var(--camera-width)/2));
     top: calc(50% - calc(var(--camera-height)/2));
+}
+
+body {
+    background-color: var(--black-joker-color) !important;
+}
+
+.game-banner {
+    z-index: -1 !important;
+    position: absolute;
+}
+
+.game-name {
+    font-family: 'Nova Flat', cursive;
+    font-size: 20vmin;
+    color: var(--red-joker-color);
+    text-shadow: 0 0 5px var(--black-shadow);
+}
+
+.menu-btn {
+    min-width: 7rem;
+    height: 5rem;
+    font-size: 2.5rem !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    border-radius: 0.5rem !important;
+    border-width: 0.2rem !important;
+    box-shadow: 0 0 3px 0px var(--black-shadow);
+}
+
+.join-room-btn {
+    background-color: var(--red-joker-color) !important;
+    border-color: var(--red-joker-darker-color) !important;
+}
+
+.join-room-btn:hover {
+    background-color: var(--red-joker-darker-color) !important;
+    border-color: var(--red-joker-color) !important;
+}
+
+.create-room-btn {
+    background-color: var(--black-joker-color) !important;
+    border-color: var(--black-joker-darker-color) !important;
+}
+
+.create-room-btn:hover {
+    background-color: var(--black-joker-darker-color) !important;
+    border-color: var(--black-joker-color) !important;
+}
+
+.required-left-empty {
+    box-shadow: 0 0 0px 4px var(--required-field-color) !important;
+}
+
+.code-tag {
+    border-radius: 0.5rem !important;
+    box-shadow: 0px 0px 4px 0 var(--black-shadow) !important;
+    overflow: hidden;
+    border-width: 2px !important;
+    border-color: var(--blue-joker-color) !important;
+    background-color: var(--black-joker-color) !important;
+}
+
+.code-tag h2 {
+    font-family: 'Inter', sans-serif;
+    color: var(--blue-joker-color) !important;
+}
+
+.code-tag rect, .code-tag path {
+    stroke: var(--blue-joker-color);
+}
+
+.code-tag:hover {
+    border-color: var(--black-joker-color) !important;
+    background-color: var(--blue-joker-color) !important;
+}
+
+.code-tag:hover rect, .code-tag:hover path {
+    stroke: var(--black-joker-color);
+}
+
+.code-tag:hover h2 {
+    color: var(--black-joker-color) !important;
+}
+
+.code-tag:focus {
+    outline: none !important;
+}
+
+.h-flipped {
+    transform: scale(-1,1);
+}
+
+.icon-btn {
+    fill: var(--joker-white) !important;
+}
+
+.player {
+    border: none !important;
+    background: none !important;
+    background-color: var(--overlaying-gray) !important;
+    border-radius: 0.5rem !important;
+}
+
+.player .card-body {
+    border: none !important;
+}
+
+.player-count-title, .player h3 {
+    color: var(--joker-white);
+    font-family: 'Inter', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+.player-table-height {
+    height: var(--player-table-height-num);
+}
+
+.form-text-input {
+    min-width: 17rem !important;
+    height: 4.5rem !important;
+    font-size: 2.5rem !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 200 !important;
+    text-align: center !important;
+    border-radius: 0.5rem !important;
+    border: none !important;
+}
+
+.h-90 {
+    height: 90%;
+}
+
+.h-10 {
+    height: 10%;
+}
+
+.joker-card {
+    background-color: gray;
+    width: 10vw;
+    height: 14vw;
+    border-radius: 2rem;
+    margin-right: 0.2rem;
+    transition: margin-top 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.joker-card:hover {
+    margin-top: -2rem;
+}
+
+.player {
+    background-color: gray;
+    width: 14vw !important;
+    height: 9vw !important;
+    margin-right: 1rem !important;
 }
