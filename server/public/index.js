@@ -87,11 +87,29 @@ peerConnection.addEventListener('connectionstatechange', (event) => {
     }
 });
 
+peerConnection.onconnectionstatechange = async (e) => {
+    if (peerConnection.connectionState === "disconnected") {
+        let videoElement = document.getElementById(e.currentTarget.getRemoteStreams()[0].id);
+
+        if (videoElement) {
+            videoElement.remove();
+        }
+    }
+}
+
 peerConnection.ontrack = async (event) => {
     console.log('GOT TRACK!');
-    let otherVideoElem = document.getElementById("other");
-    if (otherVideoElem.srcObject) return;
-    otherVideoElem.srcObject = event.streams[0];
+
+    if (document.getElementById(event.streams[0].id)) return;
+
+    let newVideo = document.createElement('video');
+    
+    newVideo.id = event.streams[0].id;
+    newVideo.className = "camera opponent-camera";
+    newVideo.playsInline = true;
+    newVideo.autoplay = true;
+    newVideo.srcObject = event.streams[0];
+    document.getElementById('content-div').appendChild(newVideo);
 };
 
 let constraints = { video: true, audio: true };
